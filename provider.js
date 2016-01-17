@@ -34,10 +34,11 @@ var VERSION = 0;
 var PROTOCOL = new Buffer('0000', 'hex');
 
 var templates = {
-    "unsupported_ipc_code": "Unsupported IPC message code (<%= code =>)",
+    "function_not_found": "Function not found (<%= name =>)",
     "invalid_ipc_code": "Invalid IPC message code (<%= code =>)",
     "invalid_ipc_version": "Invalid IPC version (<%= version =>)",
-    "invalid_ipc_reserved": "Invalid IPC reserved byte value (<%= value =>)"
+    "invalid_ipc_reserved": "Invalid IPC reserved byte value (<%= value =>)",
+    "unsupported_ipc_code": "Unsupported IPC message code (<%= code =>)"
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,10 +46,10 @@ var templates = {
 
 function getHeader(code, length) {
     var header = new Buffer(8);
-    header.writeUInt8(VERSION, 0);   // Version
-    header.writeUInt8(0, 1);         // Reserved
-    header.writeUInt8(code, 2);      // Code
-    header.writeUInt8(0, 3);         // Reserved
+    header.writeUInt8(VERSION, 0); // Version
+    header.writeUInt8(0, 1); // Reserved
+    header.writeUInt8(code, 2); // Code
+    header.writeUInt8(0, 3); // Reserved
     header.writeUInt32BE(length, 4); // Length
     return header;
 }
@@ -121,6 +122,10 @@ function Provider(options) {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Public instance methods
+
+Provider.prototype.progress = function(progress, message) {
+    this._handleProgress(progress, message || "");
+};
 
 Provider.prototype.start = function() {
     this._connect();
@@ -246,12 +251,14 @@ FunctionWorker.prototype._consume = function(fcn, length) {
  * @param {string} type - The error type.
  * @param {string} key - The key to replace in the message string.
  * @param {string} value - The value to replace the key with in the message string.
+ * @returns {boolean} The value false.
  */
 Provider.prototype._critical = function(type, key, value) {
     var obj = {};
     obj[key] = value;
     var error = new ProviderError(type, obj);
     this._handleFailure(error);
+    return false;
 };
 
 /**
@@ -300,7 +307,7 @@ Provider.prototype._readBody = function() {
     if (this._code === action.FUNCTION) {
         this._handleFunction(buf);
     } else {
-        this._critical("unsupported_ipc_code", "code", this._code);
+        return this._critical("unsupported_ipc_code", "code", this._code);
     }
 
     this._mode = 0;
@@ -385,7 +392,9 @@ Provider.prototype._handleFunction = function(data) {
 
     // Read name
     var name = readString(data, offset, nameLength);
-    if ()
+    if (typeof this.app.prototype[name] !== 'function') {
+        return this._critical("function_not_found", "name", name);
+    }
     offset += nameLength;
 
     // Read argument count
@@ -393,7 +402,7 @@ Provider.prototype._handleFunction = function(data) {
     offset += 2;
 
     // Read each argument in turn
-    var args = [], argLength, arg, i;
+    var argLength, arg, i, args = [];
     for (i = 0; i < argCount; ++i) {
         // Read argument length
         argLength = readUInt32(data, offset, 4);
@@ -407,9 +416,33 @@ Provider.prototype._handleFunction = function(data) {
 
     // Handle result without blocking
     setTimeout(function() {
-        var result = this.app[name].call(null, args);
+        var result;
+        try {
+            result = this.app[name].call(null, args);
+        } catch (e) {
+            this._handleFailure(e);
+            return;
+        }
         this._handleResult(result);
     }.bind(this), 0);
+};
+
+/**
+ * @summary Handles a progress message.
+ *
+ * @param {number} progress - A floating point value between 0 and 1 representing the progress of
+ *   the calculation.
+ * @param {string} message - An info message relating to the progress of the calculation.
+ */
+Provider.prototype._handleProgress = function(progress, message) {
+    var messageLength = Buffer.byteLength(message);
+    var header = getHeader(action.PROGRESS, 4 + 2 + messageLength);
+
+    var prog = new Buffer(4 + 2 + messageLength);
+    prog.writeFloatBE(progress, 0);
+    prog.writeUInt16BE(messageLength, 4);
+    prog.write(message, 6, messageLength);
+    this.messageQueue.push(Buffer.concat([header, prog]));
 };
 
 /**
