@@ -1,0 +1,32 @@
+{
+  "name": "math",
+  "version": "0.0.0",
+  "description": "An app providing basic arithmetic operations",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thinknode/thinknode-provider-seed-node.git"
+  },
+  "keywords": [
+    "thinknode",
+    "provider",
+    "calculations",
+    "functions",
+    "seed",
+    "node",
+    "javascript"
+  ],
+  "author": "Kyle Burnett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thinknode/thinknode-provider-seed-node/issues"
+  },
+  "homepage": "https://github.com/thinknode/thinknode-provider-seed-node",
+  "dependencies": {
+    "error-engine": "1.0.0",
+    "msgpack5": "3.3.0"
+  }
+}
