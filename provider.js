@@ -186,6 +186,13 @@ function Provider(app) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Public instance methods
 
+/**
+ * @summary Starts the provider.
+ * @description
+ * This is the only public function of the provider. It is responsible for making a socket
+ * connection and registering itself as a provider using the environment variables for the host,
+ * port, and pid.
+ */
 Provider.prototype.start = function() {
     this._connect();
     this._register();
@@ -435,6 +442,7 @@ Provider.prototype._finishFunction = function(err, data) {
 };
 
 /**
+ * @private
  * @summary The callback that is called to finish a ping/pong interchange.
  */
 Provider.prototype._finishPing = function() {
@@ -482,6 +490,7 @@ Provider.prototype._handleFailure = function(code, message) {
 };
 
 /**
+ * @private
  * @summary Handles a progress message.
  *
  * @param {number} progress - A floating point value between 0 and 1 representing the progress of
