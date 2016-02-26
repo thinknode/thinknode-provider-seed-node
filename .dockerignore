@@ -2,3 +2,4 @@
 LICENSE
 README.md
 manifest.json
+node_modules/*
