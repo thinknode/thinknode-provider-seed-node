@@ -31,7 +31,7 @@ app.get_blob_length = function(a) {
 };
 
 app.get_hours = function(a) {
-    return a.getUTCHours("2016-02-26T12:32:10.022Z");
+    return a.getUTCHours();
 };
 
 var provider = new Provider(app);
