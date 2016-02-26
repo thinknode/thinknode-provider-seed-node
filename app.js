@@ -2,21 +2,37 @@
  * Thinknode App
  */
 
+var sleep = require('system-sleep');
+
 var Provider = require('./provider');
 
-/**
- * @summary Represents a Thinknode app.
- *
- * @constructor
- */
-function App() {}
+var app = {};
 
-App.prototype.add = function(a, b) {
+app.add = function(a, b) {
     return a + b;
 };
 
-var app = new App();
-var provider = new Provider({
-    app: app
-});
+app.add_with_progress = function(a, b, progress) {
+    progress(0.25, "25%");
+    sleep(1000);
+    progress(0.5, "50%");
+    sleep(1000);
+    progress(0.75);
+    sleep(1000);
+    return a + b;
+};
+
+app.add_with_failure = function(a, b, progress, fail) {
+    fail("my_error", "This is a test of the error functionality");
+};
+
+app.get_blob_length = function(a) {
+    return a.length;
+};
+
+app.get_hours = function(a) {
+    return a.getUTCHours("2016-02-26T12:32:10.022Z");
+};
+
+var provider = new Provider(app);
 provider.start();

@@ -26,7 +26,10 @@
   },
   "homepage": "https://github.com/thinknode/thinknode-provider-seed-node",
   "dependencies": {
+    "async": "1.5.2",
     "error-engine": "1.0.0",
-    "msgpack5": "3.3.0"
+    "msgpack5": "3.3.0",
+    "node-int64": "0.4.0",
+    "system-sleep": "1.0.0"
   }
 }

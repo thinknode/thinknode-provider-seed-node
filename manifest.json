@@ -1,0 +1,137 @@
+{
+    "dependencies": [],
+    "functions": [{
+        "name": "add",
+        "description": "Computes a + b. (Replace me with your app's functions).",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "First operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }, {
+                    "name": "b",
+                    "description": "Second operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The result of adding a to b.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }, {
+        "name": "add_with_progress",
+        "description": "Computes a + b with progress updates.",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "First operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }, {
+                    "name": "b",
+                    "description": "Second operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The result of adding a to b.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }, {
+        "name": "add_with_failure",
+        "description": "Reports a failure.",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "First operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }, {
+                    "name": "b",
+                    "description": "Second operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The result of adding a to b.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }, {
+        "name": "get_blob_length",
+        "description": "Gets the length of the blob in bytes.",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "The blob.",
+                    "schema": {
+                        "blob_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The length of the blob a.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }, {
+        "name": "get_hours",
+        "description": "Gets the hours part of a datetime object.",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "The date.",
+                    "schema": {
+                        "datetime_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The hours part of the datetime a.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }],
+    "provider": {
+        "private": {
+            "image": {
+                "tag": "1.0.0"
+            }
+        }
+    },
+    "records": [],
+    "types": [],
+    "upgrades": []
+}
