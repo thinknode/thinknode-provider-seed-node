@@ -7,6 +7,7 @@ var os = require('os');
 var util = require('util');
 
 var async = require('async');
+var bluebird = require('bluebird');
 var int64 = require('node-int64');
 var msgpack = require('msgpack5')({
     "forceFloat64": true
@@ -573,18 +574,20 @@ Provider.prototype._processFunction = function(data, callback) {
     args.push(this._handleProgress.bind(this));
     args.push(this._getFailureHandler(callback));
 
-    try {
-        var result = this.app[name].apply(null, args);
+    var self = this;
+    bluebird.try(function() {
+        return self.app[name].apply(null, args);
+    }).then(function(result) {
         if (!callback.called) {
             callback.called = true;
             callback(null, result);
         }
-    } catch(e) {
+    }).catch(function(e) {
         if (!callback.called) {
             callback.called = true;
             callback(e);
         }
-    }
+    });
 };
 
 /**
