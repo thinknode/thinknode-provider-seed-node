@@ -80,11 +80,11 @@ var VERSION = 0;
 var PROTOCOL = new Buffer('0000', 'hex');
 
 var templates = {
-    "function_not_found": "Function not found (<%= name =>)",
-    "invalid_ipc_code": "Invalid IPC message code (<%= code =>)",
-    "invalid_ipc_version": "Invalid IPC version (<%= version =>)",
-    "invalid_ipc_reserved": "Invalid IPC reserved byte value (<%= value =>)",
-    "unsupported_ipc_code": "Unsupported IPC message code (<%= code =>)"
+    "function_not_found": "Function not found (<%= name %>)",
+    "invalid_ipc_code": "Invalid IPC message code (<%= code %>)",
+    "invalid_ipc_version": "Invalid IPC version (<%= version %>)",
+    "invalid_ipc_reserved": "Invalid IPC reserved byte value (<%= value %>)",
+    "unsupported_ipc_code": "Unsupported IPC message code (<%= code %>)"
 };
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
