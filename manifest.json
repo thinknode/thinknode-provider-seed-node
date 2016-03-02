@@ -28,6 +28,33 @@
             }
         }
     }, {
+        "name": "add_async",
+        "description": "Computes a + b asynchronously.",
+        "execution_class": "cpu.x1",
+        "schema": {
+            "function_type": {
+                "parameters": [{
+                    "name": "a",
+                    "description": "First operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }, {
+                    "name": "b",
+                    "description": "Second operand.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }],
+                "returns": {
+                    "description": "The result of adding a to b.",
+                    "schema": {
+                        "integer_type": {}
+                    }
+                }
+            }
+        }
+    }, {
         "name": "add_with_progress",
         "description": "Computes a + b with progress updates.",
         "execution_class": "cpu.x1",

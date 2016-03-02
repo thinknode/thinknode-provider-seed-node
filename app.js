@@ -2,6 +2,7 @@
  * Thinknode App
  */
 
+var bluebird = require('bluebird');
 var sleep = require('system-sleep');
 
 var Provider = require('./provider');
@@ -10,6 +11,10 @@ var app = {};
 
 app.add = function(a, b) {
     return a + b;
+};
+
+app.add_async = function(a, b) {
+    return bluebird.resolve(a + b);
 };
 
 app.add_with_progress = function(a, b, progress) {
